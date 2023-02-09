@@ -33,12 +33,48 @@
     </ul>
 </nav>
 <main>
-
-    <h1>About us</h1>
-    <p>Animal World site was created for Javascript/CSS/HTML SBA.
-        This is a static website to showcase the power of CSS and Javascript.
-    I have used AJAX to request a public api - OpenWeatherApi for weather related information.
+<div style="color: #B76EB8">
+    <h1  style=" color : #00008B;" >About us</h1>
+    <p>
+        <strong>Animal World </strong>site was created for Javascript/CSS/HTML SBA. This is a static website to showcase the power of CSS and Javascript.
     </p>
+    <div>
+        <span class="tech">
+    <h2  style=" color : #00008B;"> Features:</h2>
+    It consists of 5 HTML Pages<br>
+    1. Home Page - index.html<br>
+    2. Animals Page - animalList.html<br>
+    3. Weather Page - weather.html<br>
+    4. Contact us Page - contactus.html<br>
+        5. About us Page - about.html<br></span>
+    </div>
+    <h2 style=" color : #00008B;">Technical Details</h2>
+    1. Page layout is designed using Flexbox, to align the header, navigation, main, footer section<br>
+    2. Header<br>
+    &nbsp;Header includes an animated text "Animal World", the title of the page. The color of the font is changed for every 4s.
+    The title font family is "Lora" - https://fonts.googleapis.com/css2?family=Lora&display=swap<br>
+    3. Navigation<br>
+    &nbsp;The layout of navigation menu is controlled by CSS. The style is set with the help of psuedo class selectors, child combinator
+    selectors, descendant selectors to transform the unodered list to a navigatable menu item.<br>
+    &nbsp;ul li ul:hover - psuedo class selectors<br>
+    &nbsp;ul li:focus-within > ul - child combinator selectors<br>
+    &nbsp;ul li ul - descendant selectors<br>
+    4. Main<br>
+    &nbsp;Main section holds the actual content intended to deliver to the customer. It holds different types of content like text, image,
+    GIF, videos and input options based on the page requisite.<br>
+    5. Footer<br>
+    &nbsp;End section of the page, which holds the link to the contact us page.<br>
+    6. Cascading Stylesheet is implemented as inline, internal and external page to achieve the outlook of the page.<br>
+    7. Contact Us Page - It contains a form to provide suggestions or feedback. The inputs are validated on form submission and the response
+    is returned back in panel which is implemented using JQuery toggel method.<br>
+    8. Weather Page - It provides an option to check on weather for state or city provided as an input. It uses public api - OpenWeatherApi
+    by an AJAX call and its response is returned in JSON format. The response object's value is then stored in Custom Object and the values are displayed in a table format. As the user makes new searches the response is stored in a array and being displayed.<br>
+    9. Animal Page - The content holds images, video and text.<br>
+    &nbsp;img + p - adjacent sibling combinator - for font color<br>
+    &nbsp;div p::first-letter -  psuedo element selector  for First letter of the paragraph to be in red.<br>
+    &nbsp;div ~ p  - general sibling combinator<br>
+
+</div>
 </main>
 <footer>
     <hr/>
