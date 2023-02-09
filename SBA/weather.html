@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animal World</title>
+    <link rel="stylesheet" href="./resources/css/main1.css">
+
+    <style>
+        .table-striped tbody tr:nth-of-type(odd){
+            background-color:rgba(0,0,0,.05)
+        }
+        .table{
+           display:inline-block;
+            }
+        td{
+            height: 30px;
+        }
+        th{
+            height: 30px;
+        }
+        .table-bordered td,.table-bordered th{
+            border:1px solid #dee2e6
+        }
+        .table-bordered thead td,.table-bordered thead th{
+            border-bottom-width:2px
+        }
+        .center {
+            margin: auto;
+            width: 80%;
+            border: 3px solid green;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header class="header" >
+    <div class="container">
+        <h1 class="title" >
+            <span class="title-word title-word-1">Animal</span>
+            <span class="title-word title-word-2">World</span>
+        </h1>
+    </div>
+</header>
+<nav>
+    <ul>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./weather.html">Weather</a></li>
+        <li><a href="./animalList.html">Animals</a></li>
+        <li><a href="#">Contact</a>
+            <ul>
+                <li><a href="./about.html">About Us</a></li>
+                <li><a href="./contactus.html">Contact Us</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<main>
+
+    <div style="display: flex;justify-content: center; ">
+        <img src="./resources/img/sunrise.gif" alt="Sunrise Img" width="700" height="300"/>
+    </div>
+    <br/><br>
+    <div class="center">
+        <br/>
+        <br/>
+        <form >
+            <label>Enter a City or State :</label>
+            <input type="text" id="city">
+            <input type="button" value="Check Weather" onclick="getWeather()"><br/><br>
+            <div id="msg" style="color: #dc3545"></div><br/>
+            <div id="resultDiv" style="position: relative">
+                <table id="result" class="table" ></table>
+            </div>
+            <br>
+        </form>
+    </div>
+
+
+</main>
+<footer>
+    <hr/>
+    <div style="display: flex;justify-content: center; ">
+    <a href="./contactus.html" >Contact us</a>
+    </div>
+</footer>
+<script>
+    var weather_map=[];
+    document.getElementById("table").hidden=true;
+
+    //let i=1;
+    function Weather(location,cord,weather,temp,sunrise,sunset){
+        this.location=location;
+        this.cord=cord;
+        this.weather=weather;
+        this.temp=temp;
+        this.sunrise=sunrise;
+        this.sunset=sunset;
+    }
+
+    function addToArray(value) {
+        weather_map.push(value);
+    }
+
+    function getWeather() {
+        const city = document.getElementById("city").value;
+        if(city  === '')
+        {
+            document.getElementById("msg").innerHTML = "City or State cannot be blank";
+            document.getElementById("city").style.borderColor="#dc3545";
+            return false;
+        }
+        const xhr = new XMLHttpRequest();
+        const apiKey = "10ace7cb3b68e288a72a38a3786acf4c";
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+
+        xhr.open('GET', url, true);
+
+        xhr.onreadystatechange = function() {
+
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+
+                const response = JSON.parse(this.responseText);
+                const temperature = response.main.temp;
+                const description = response.weather[0].description;
+
+                let location=city;
+                let cord=response.coord.lon +" lon "+response.coord.lat +" lat";
+                let temp=response.main.temp_min +" °F min "+ response.main.temp_max +" °F max ";
+                let weath=response.main.temp+" °F "+ response.weather[0].description;
+                let sunrise=new Date(response.sys.sunrise * 1000).toLocaleTimeString();
+                let sunset=new Date(response.sys.sunset * 1000).toLocaleTimeString();
+                let weather = new Weather(location,cord,weath,temp,sunrise,sunset);
+
+                addToArray(weather);
+                /*let table="<thead><tr><th>Topic</th><th>Value</th></tr></thead><tbody>";
+                table += "<tr><td> Coordinates </td><td>" + response.coord.lon +" lon "+response.coord.lat +" lat </td></tr>";
+                        table +="<tr><td> Weather </td><td>" +response.main.temp+" °F "+ response.weather[0].description +" </td></tr>";
+                table +="<tr><td> Temperature </td><td>" + response.main.temp_min +" °F min "+ response.main.temp_max +" °F max </td></tr>";
+                table +="<tr><td> Sunrise </td><td>" +new Date(response.sys.sunrise * 1000).toLocaleTimeString()+" </td></tr>";
+                table +="<tr><td> Sunset </td><td>" +new Date(response.sys.sunset * 1000).toLocaleTimeString()+" </td></tr>";
+                table +="</tbody>";*/
+                let table="<thead><tr><th>Location</th><th>Co-ordinates</th><th>Weather</th><th>Temperature</th><th>Sunrise</th><th>Sunset</th></tr></thead><tbody>";
+                for (let value of weather_map.values()){
+                    table+="<tr><td>"+value.location+"</td><td>"+value.cord+"</td><td>"+value.weather+"</td><td>"+value.temp+"</td><td>"+value.sunrise+"</td><td>"+value.sunset+"</td></tr>"
+                }
+                table +="</tbody>";
+
+
+                document.getElementById("result").innerHTML = table;
+                document.getElementById("result").classList.add("table-striped");
+                document.getElementById("result").classList.add("table-bordered");
+               // document.getElementById("resultDiv").style.width= "50%";
+                document.getElementById("msg").innerHTML = " ";
+                document.getElementById("city").style.borderColor="";
+
+            }else{
+                document.getElementById("msg").innerHTML = "Incorrect City or State Name ";
+                document.getElementById("city").style.borderColor="#dc3545";
+               // document.getElementById("table").hidden=true;
+            }
+        };
+
+        xhr.send();
+        return true;
+    }
+
+
+</script>
+</body>
+</html>
